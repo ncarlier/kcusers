@@ -3,9 +3,7 @@ package deleteuser
 import (
 	"bufio"
 	"fmt"
-	"io"
 	"log/slog"
-	"net/http"
 	"os"
 	"strings"
 	"sync"
@@ -79,22 +77,8 @@ func exec(client *keycloak.Client, params execParams) error {
 }
 
 func deleteUser(client *keycloak.Client, uid string) error {
-	endpoint := fmt.Sprintf("%s/users/%s", client.GetAdminBaseURL(), uid)
-	req, err := http.NewRequest("DELETE", endpoint, http.NoBody)
-	if err != nil {
-		return err
-	}
-	res, err := client.Do(req)
-	if err != nil {
-		return err
-	}
-	defer res.Body.Close()
-
-	if res.StatusCode != 204 {
-		return fmt.Errorf("invalid response: %s", res.Status)
-	}
-
-	data, err := io.ReadAll(res.Body)
+	resource := fmt.Sprintf("/users/%s", uid)
+	data, err := client.AdminOperation("DELETE", resource)
 	if err != nil {
 		return err
 	}
