@@ -2,6 +2,20 @@
 
 Simple CLI used to do some user management tasks on a Keycloak instance.
 
+## Installation
+
+Run the following command:
+
+```bash
+$ go install github.com/ncarlier/kcusers@latest
+```
+
+**Or** download the binary regarding your architecture:
+
+```bash
+$ curl -sf https://gobinaries.com/ncarlier/kcusers | sh
+```
+
 ## Build
 
 ```bash
