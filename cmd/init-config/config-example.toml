@@ -1,0 +1,24 @@
+# Keycloak user management CLI configuration file
+#
+# If an attribute has a default value, this value is used if the attribute is not
+# set or empty.
+#
+# Environment variables can be used anywhere in this config file, simply surround
+# them with ${}. For strings the variable must be within quotes (ie, "${STR_VAR}"),
+# for numbers and booleans they should be plain (ie, ${INT_VAR}, ${BOOL_VAR})
+
+[log]
+## Log level
+# Values: "debug", "info", "warn" or "error"
+# Default: "info"
+level = "${PROXY_LOG_LEVEL}"
+## Log format
+# Values: "json" or "text"
+# Default: "text"
+format = "${PROXY_LOG_FORMAT}"
+
+[keycloak]
+authority = "https://localhost:8080"
+realm = "test"
+client_id = "test"
+client_secret = "1c1df5f7-97c7-4b8b-b8dc-1d3b71af6fe4"
