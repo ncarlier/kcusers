@@ -11,7 +11,7 @@ GOARCH?=$(shell go env GOHOSTARCH)
 ARCHIVE=$(APPNAME)-$(GOOS)-$(GOARCH).tgz
 
 # Extract version infos
-PKG_VERSION:=github.com/ncarlier/$(APPNAME)/version
+PKG_VERSION:=github.com/ncarlier/$(APPNAME)/internal
 VERSION:=`git describe --always --dirty`
 GIT_COMMIT:=`git rev-list -1 HEAD --abbrev-commit`
 BUILT:=`date`
