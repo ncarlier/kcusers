@@ -23,8 +23,8 @@ func main() {
 	}
 
 	conf := config.NewConfig()
-	if configFile != "" {
-		if err := conf.LoadConfig(configFile); err != nil {
+	if cmd.ConfigFlag != "" {
+		if err := conf.LoadConfig(cmd.ConfigFlag); err != nil {
 			slog.Error("unable to load configuration file", "error", err)
 			os.Exit(1)
 		}
@@ -32,7 +32,7 @@ func main() {
 	logger.Configure(conf.Log.Level, conf.Log.Format)
 
 	args := flag.Args()
-	commandLabel, idx := fisrtCommand(args)
+	commandLabel, idx := cmd.GetFirstCommand(args)
 
 	if command, ok := cmd.Commands[commandLabel]; ok {
 		if err := command.Exec(args[idx+1:], conf); err != nil {

@@ -9,6 +9,8 @@ import (
 	"github.com/ncarlier/kcusers/pkg/keycloak"
 )
 
+const cmdName = "count-users"
+
 type CountUsersCmd struct {
 	flagSet *flag.FlagSet
 }
@@ -28,15 +30,15 @@ func (c *CountUsersCmd) Exec(args []string, conf *config.Config) error {
 }
 
 func (c *CountUsersCmd) Usage() {
-	c.flagSet.Usage()
+	fmt.Fprintf(c.flagSet.Output(), "  %s\tCount users\n", cmdName)
 }
 
 func newCountUsersCmd() cmd.Cmd {
 	result := &CountUsersCmd{}
-	result.flagSet = flag.NewFlagSet("count-users", flag.ExitOnError)
+	result.flagSet = flag.NewFlagSet(cmdName, flag.ExitOnError)
 	return result
 }
 
 func init() {
-	cmd.Add("count-users", newCountUsersCmd)
+	cmd.Add(cmdName, newCountUsersCmd)
 }

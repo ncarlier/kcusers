@@ -10,6 +10,8 @@ import (
 	"github.com/ncarlier/kcusers/pkg/keycloak"
 )
 
+const cmdName = "delete-users"
+
 type execParams struct {
 	filename  string
 	concurent uint
@@ -43,12 +45,12 @@ func (c *DeleteUsersCmd) Exec(args []string, conf *config.Config) error {
 }
 
 func (c *DeleteUsersCmd) Usage() {
-	c.flagSet.Usage()
+	fmt.Fprintf(c.flagSet.Output(), "  %s\tDelete users using UUID list\n", cmdName)
 }
 
-func newGetUserCmd() cmd.Cmd {
+func newDeleteUsersCmd() cmd.Cmd {
 	result := &DeleteUsersCmd{}
-	result.flagSet = flag.NewFlagSet("delete-users", flag.ExitOnError)
+	result.flagSet = flag.NewFlagSet(cmdName, flag.ExitOnError)
 	result.flagSet.StringVar(&result.filename, "f", "", "List of users to delete")
 	result.flagSet.UintVar(&result.concurent, "concurent", 5, "Concurent API calls (0..100)")
 	result.flagSet.BoolVar(&result.dryRun, "dry-run", true, "Dry run execution")
@@ -56,5 +58,5 @@ func newGetUserCmd() cmd.Cmd {
 }
 
 func init() {
-	cmd.Add("delete-users", newGetUserCmd)
+	cmd.Add(cmdName, newDeleteUsersCmd)
 }

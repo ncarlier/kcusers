@@ -11,6 +11,8 @@ import (
 	"github.com/ncarlier/kcusers/pkg/uuid"
 )
 
+const cmdName = "get-user"
+
 type GetUserCmd struct {
 	uid     string
 	flagSet *flag.FlagSet
@@ -39,16 +41,16 @@ func (c *GetUserCmd) Exec(args []string, conf *config.Config) error {
 }
 
 func (c *GetUserCmd) Usage() {
-	c.flagSet.Usage()
+	fmt.Fprintf(c.flagSet.Output(), "  %s\tGet user details\n", cmdName)
 }
 
 func newGetUserCmd() cmd.Cmd {
 	result := &GetUserCmd{}
-	result.flagSet = flag.NewFlagSet("get-user", flag.ExitOnError)
+	result.flagSet = flag.NewFlagSet(cmdName, flag.ExitOnError)
 	result.flagSet.StringVar(&result.uid, "uid", "", "User ID")
 	return result
 }
 
 func init() {
-	cmd.Add("get-user", newGetUserCmd)
+	cmd.Add(cmdName, newGetUserCmd)
 }
