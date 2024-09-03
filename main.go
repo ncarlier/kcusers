@@ -8,19 +8,12 @@ import (
 
 	"github.com/ncarlier/kcusers/cmd"
 	_ "github.com/ncarlier/kcusers/cmd/all"
-	"github.com/ncarlier/kcusers/internal"
 	"github.com/ncarlier/kcusers/internal/config"
 	"github.com/ncarlier/kcusers/pkg/logger"
 )
 
 func main() {
 	flag.Parse()
-
-	// show version if asked
-	if *internal.ShowVersionFlag {
-		internal.PrintVersion()
-		os.Exit(0)
-	}
 
 	conf := config.NewConfig()
 	if cmd.ConfigFlag != "" {

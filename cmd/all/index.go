@@ -9,4 +9,6 @@ import (
 	_ "github.com/ncarlier/kcusers/cmd/users/count"
 	// activate delet-users command
 	_ "github.com/ncarlier/kcusers/cmd/users/delete"
+	// activate version command
+	_ "github.com/ncarlier/kcusers/cmd/version"
 )
