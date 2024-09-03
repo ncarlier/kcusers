@@ -41,7 +41,7 @@ func (c *GetUserCmd) Exec(args []string, conf *config.Config) error {
 }
 
 func (c *GetUserCmd) Usage() {
-	fmt.Fprintf(c.flagSet.Output(), "  %s\tGet user details\n", cmdName)
+	cmd.PrintCmdUsage(c.flagSet.Output(), cmdName, "Get user details")
 }
 
 func newGetUserCmd() cmd.Cmd {

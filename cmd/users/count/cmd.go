@@ -30,7 +30,7 @@ func (c *CountUsersCmd) Exec(args []string, conf *config.Config) error {
 }
 
 func (c *CountUsersCmd) Usage() {
-	fmt.Fprintf(c.flagSet.Output(), "  %s\tCount users\n", cmdName)
+	cmd.PrintCmdUsage(c.flagSet.Output(), cmdName, "Count users")
 }
 
 func newCountUsersCmd() cmd.Cmd {

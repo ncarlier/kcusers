@@ -45,7 +45,7 @@ func (c *DeleteUsersCmd) Exec(args []string, conf *config.Config) error {
 }
 
 func (c *DeleteUsersCmd) Usage() {
-	fmt.Fprintf(c.flagSet.Output(), "  %s\tDelete users using UUID list\n", cmdName)
+	cmd.PrintCmdUsage(c.flagSet.Output(), cmdName, "Delete users using UID list")
 }
 
 func newDeleteUsersCmd() cmd.Cmd {

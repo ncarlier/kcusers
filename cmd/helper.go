@@ -1,8 +1,12 @@
 package cmd
 
-import "strings"
+import (
+	"fmt"
+	"io"
+	"strings"
+)
 
-// GetFirstCommand restun first command of argument list
+// GetFirstCommand return first command of argument list
 func GetFirstCommand(args []string) (name string, index int) {
 	for idx, arg := range args {
 		if strings.HasPrefix(arg, "-") {
@@ -12,4 +16,9 @@ func GetFirstCommand(args []string) (name string, index int) {
 		return arg, idx
 	}
 	return "", -1
+}
+
+// PrintCmdUsage print command usage
+func PrintCmdUsage(w io.Writer, cmdName, cmdDesc string) {
+	fmt.Fprintf(w, "  %s\t%s\n", cmdName, cmdDesc)
 }
