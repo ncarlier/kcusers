@@ -42,6 +42,7 @@ authority = "http://loclahost:8080"
 realm = "test"
 client_id = "xxx"
 client_secret = "yyy"
+timeout = "5s"
 ```
 
 Play with the CLI
@@ -49,10 +50,14 @@ Play with the CLI
 ```bash
 # Get CLI usage
 ./kcusers -h
+# Count users
+./kcusers count-users
 # Get user
 ./kcusers get-user -uid ffcc46cc-f66d-4df8-a623-a6d54ff242df
 # Delete users
 ./kcusers delete-users -f users_to_delete.txt --dry-run --concurent 5
+# Count client's sessions
+./kcusers count-sessions -cid 2ca2c534-59e9-4039-94fb-562072cd1c11
 ```
 
 ## License

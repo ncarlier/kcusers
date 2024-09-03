@@ -11,14 +11,28 @@
 ## Log level
 # Values: "debug", "info", "warn" or "error"
 # Default: "info"
-level = "${PROXY_LOG_LEVEL}"
+level = "${KCUSERS_LOG_LEVEL}"
 ## Log format
 # Values: "json" or "text"
 # Default: "text"
-format = "${PROXY_LOG_FORMAT}"
+format = "${KCUSERS_LOG_FORMAT}"
 
 [keycloak]
-authority = "https://localhost:8080"
-realm = "test"
-client_id = "test"
-client_secret = "1c1df5f7-97c7-4b8b-b8dc-1d3b71af6fe4"
+## Keycloak base URL
+# Default: "http://localhost:8080"
+authority = "${KCUSERS_AUTHORITY}"
+# Keycloak realm
+# Default: "test"
+realm = "${KCUSERS_REALM}"
+# Client ID
+# Default: "test"
+client_id = "${KCUSERS_CLIENT_ID}"
+# Client secret
+# Default: ""
+client_secret = "${KCUSERS_CLIENT_SECRET}"
+# Insecure TLS configuration
+# Default: false
+tls_insecure = ${KCUSERS_TLS_INSECURE}
+# HTTP timeout
+# Default: "5s"
+timeout = "${KCUSERS_TIMEOUT}"
