@@ -57,7 +57,7 @@ func NewOIDCClientCredentialProvider(cfg *OIDCClientCredentialConfig) (*OIDCClie
 
 	if cfg.TokenCache != "" {
 		if _, err := os.Stat(cfg.TokenCache); err == nil {
-			if provider.tokenFile, err = os.OpenFile(cfg.TokenCache, os.O_RDWR, 0644); err != nil {
+			if provider.tokenFile, err = os.OpenFile(cfg.TokenCache, os.O_RDWR, 0o644); err != nil {
 				return nil, err
 			}
 			provider.tokenFileCreated = false

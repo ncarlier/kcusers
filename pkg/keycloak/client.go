@@ -5,7 +5,6 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"path/filepath"
 
 	"github.com/ncarlier/kcusers/pkg/oidc"
 )
@@ -83,7 +82,7 @@ func (c *Client) Do(req *http.Request) (*http.Response, error) {
 
 // GetAdminBaseURL return admin API base URL
 func (c *Client) GetAdminBaseURL(resource string) string {
-	path := filepath.Join("/admin/realms", c.Realm, resource)
+	path := fmt.Sprintf("/admin/realms/%s/%s", c.Realm, resource)
 	return c.Authority + path
 }
 
