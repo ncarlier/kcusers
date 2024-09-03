@@ -28,12 +28,7 @@ func NewConfig() *Config {
 			Level:  "info",
 			Format: "text",
 		},
-		Keycloak: keycloak.Config{
-			Authority:    "http://localhost:8080",
-			Realm:        "test",
-			ClientID:     "test",
-			ClientSecret: "",
-		},
+		Keycloak: keycloak.NewDefaultConfig(),
 	}
 	return c
 }

@@ -15,28 +15,39 @@ type Client struct {
 	Authority     string
 	Realm         string
 	TokenProvider *oidc.OIDCClientCredentialProvider
+	httpClient    *http.Client
 }
 
 // NewKeycloakClient creat new Keycloak client
 func NewKeycloakClient(conf *Config) (*Client, error) {
-	tokenEndpoint, err := url.Parse(fmt.Sprintf("%s/auth/realms/%s/protocol/openid-connect/token", conf.Authority, conf.Realm))
+	tokenEndpoint, err := url.Parse(fmt.Sprintf("%s/realms/%s/protocol/openid-connect/token", conf.Authority, conf.Realm))
 	if err != nil {
 		return nil, fmt.Errorf("invalid Keycloak client configuration: %w", err)
 	}
-	tokenProvider := oidc.NewOIDCClientCredentialProvider(
-		conf.ClientID,
-		conf.ClientSecret,
-		tokenEndpoint,
-	)
+
+	httpClient := newHTTPClient(conf)
+
+	tokenProvider, err := oidc.NewOIDCClientCredentialProvider(&oidc.OIDCClientCredentialConfig{
+		TokenEndpoint: tokenEndpoint.String(),
+		ClientID:      conf.ClientID,
+		ClientSecret:  conf.ClientSecret,
+		TokenCache:    conf.Cache,
+		HttpClient:    httpClient,
+	})
+	if err != nil {
+		return nil, fmt.Errorf("unable to init OIDC client provider: %w", err)
+	}
+
 	if err := tokenProvider.Start(); err != nil {
 		return nil, fmt.Errorf("unable to start Keycloak client token service: %w", err)
 	}
-	client := &Client{
+
+	return &Client{
 		Authority:     conf.Authority,
 		Realm:         conf.Realm,
 		TokenProvider: tokenProvider,
-	}
-	return client, nil
+		httpClient:    httpClient,
+	}, nil
 }
 
 // AdminOperation do HTTP operation on an resource of Keycloak Admin API
@@ -67,12 +78,12 @@ func (c *Client) AdminOperation(method, resource string) ([]byte, error) {
 func (c *Client) Do(req *http.Request) (*http.Response, error) {
 	token := c.TokenProvider.GetAccessToken()
 	req.Header.Set("Authorization", "Bearer "+token)
-	return defaultHTTPClient.Do(req)
+	return c.httpClient.Do(req)
 }
 
 // GetAdminBaseURL return admin API base URL
 func (c *Client) GetAdminBaseURL(resource string) string {
-	path := filepath.Join("/auth/admin/realms", c.Realm, resource)
+	path := filepath.Join("/admin/realms", c.Realm, resource)
 	return c.Authority + path
 }
 
