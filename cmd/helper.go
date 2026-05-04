@@ -20,5 +20,5 @@ func GetFirstCommand(args []string) (name string, index int) {
 
 // PrintCmdUsage print command usage
 func PrintCmdUsage(w io.Writer, cmdName, cmdDesc string) {
-	fmt.Fprintf(w, "  %s\t%s\n", cmdName, cmdDesc)
+	fmt.Fprintf(w, "  %-20s %s\n", cmdName, cmdDesc)
 }

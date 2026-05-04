@@ -2,7 +2,6 @@ package version
 
 import (
 	"flag"
-	"fmt"
 
 	"github.com/ncarlier/kcusers/cmd"
 	"github.com/ncarlier/kcusers/internal/config"
@@ -22,7 +21,7 @@ func (c *VersionCmd) Exec(args []string, conf *config.Config) error {
 }
 
 func (c *VersionCmd) Usage() {
-	fmt.Fprintf(c.flagSet.Output(), "  %s\tDisplay version\n", cmdName)
+	cmd.PrintCmdUsage(c.flagSet.Output(), cmdName, "Display version")
 }
 
 func newVersionCmd() cmd.Cmd {

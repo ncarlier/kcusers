@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"sort"
 )
 
 var (
@@ -22,8 +23,13 @@ func init() {
 		fmt.Fprintf(out, "kcusers is a simple user management CLI for Keycloak.\n")
 		fmt.Fprintf(out, "\nUsage:\n  kcusers [flags] [command]\n")
 		fmt.Fprintf(out, "\nAvailable Commands:\n")
-		for _, c := range Commands {
-			c.Usage()
+		var names []string
+		for name := range Commands {
+			names = append(names, name)
+		}
+		sort.Strings(names)
+		for _, name := range names {
+			Commands[name].Usage()
 		}
 		fmt.Fprintf(out, "\nFlags:\n")
 		flag.PrintDefaults()
