@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"log/slog"
@@ -18,8 +19,12 @@ func main() {
 	conf := config.NewConfig()
 	if cmd.ConfigFlag != "" {
 		if err := conf.LoadConfig(cmd.ConfigFlag); err != nil {
-			slog.Error("unable to load configuration file", "error", err)
-			os.Exit(1)
+			if errors.Is(err, os.ErrNotExist) && cmd.ConfigFlag == "./kcusers.toml" {
+				// Silently ignore missing default configuration file
+			} else {
+				slog.Error("unable to load configuration file", "error", err)
+				os.Exit(1)
+			}
 		}
 	}
 	logger.Configure(conf.Log.Level, conf.Log.Format)

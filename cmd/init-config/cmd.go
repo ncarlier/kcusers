@@ -29,7 +29,7 @@ func newInitConfigCmd() cmd.Cmd {
 	result := &InitConfigCmd{}
 
 	result.flagSet = flag.NewFlagSet(cmdName, flag.ExitOnError)
-	result.flagSet.StringVar(&result.filename, "f", "config.toml", "Configuration file to create")
+	result.flagSet.StringVar(&result.filename, "f", "kcusers.toml", "Configuration file to create")
 
 	return result
 }

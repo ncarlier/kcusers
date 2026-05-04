@@ -12,7 +12,7 @@ var (
 )
 
 func init() {
-	defaultValue := ""
+	defaultValue := "./kcusers.toml"
 	if value, ok := os.LookupEnv("KCUSERS_CONFIG"); ok {
 		defaultValue = value
 	}

@@ -27,7 +27,7 @@ make
 Create the configuration file:
 
 ```bash
-./kcusers init-config -f config.toml
+./kcusers init-config -f kcusers.toml
 ```
 
 Customize the configuration file:
