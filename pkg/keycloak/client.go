@@ -5,6 +5,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"strings"
 
 	"github.com/ncarlier/kcusers/pkg/oidc"
 )
@@ -13,7 +14,7 @@ import (
 type Client struct {
 	Authority     string
 	Realm         string
-	TokenProvider *oidc.OIDCClientCredentialProvider
+	TokenProvider *oidc.OIDCDeviceCodeProvider
 	httpClient    *http.Client
 }
 
@@ -24,14 +25,20 @@ func NewKeycloakClient(conf *Config) (*Client, error) {
 		return nil, fmt.Errorf("invalid Keycloak client configuration: %w", err)
 	}
 
+	deviceAuthEndpoint, err := url.Parse(fmt.Sprintf("%s/realms/%s/protocol/openid-connect/auth/device", conf.Authority, conf.Realm))
+	if err != nil {
+		return nil, fmt.Errorf("invalid Keycloak client configuration: %w", err)
+	}
+
 	httpClient := newHTTPClient(conf)
 
-	tokenProvider, err := oidc.NewOIDCClientCredentialProvider(&oidc.OIDCClientCredentialConfig{
-		TokenEndpoint: tokenEndpoint.String(),
-		ClientID:      conf.ClientID,
-		ClientSecret:  conf.ClientSecret,
-		TokenCache:    conf.Cache,
-		HttpClient:    httpClient,
+	tokenProvider, err := oidc.NewOIDCDeviceCodeProvider(&oidc.OIDCDeviceCodeConfig{
+		TokenEndpoint:      tokenEndpoint.String(),
+		DeviceAuthEndpoint: deviceAuthEndpoint.String(),
+		ClientID:           conf.ClientID,
+		ClientSecret:       conf.ClientSecret,
+		TokenCache:         conf.Cache,
+		HttpClient:         httpClient,
 	})
 	if err != nil {
 		return nil, fmt.Errorf("unable to init OIDC client provider: %w", err)
@@ -62,7 +69,34 @@ func (c *Client) AdminOperation(method, resource string) ([]byte, error) {
 	defer res.Body.Close()
 
 	if res.StatusCode > 299 {
-		return nil, fmt.Errorf("invalid response: %s", res.Status)
+		bodyBytes, _ := io.ReadAll(res.Body)
+		return nil, fmt.Errorf("invalid response: %s - %s", res.Status, string(bodyBytes))
+	}
+
+	data, err := io.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
+}
+
+// AdminOperationWithBody do HTTP operation on a resource of Keycloak Admin API with request body
+func (c *Client) AdminOperationWithBody(method, resource string, body io.Reader) ([]byte, error) {
+	req, err := http.NewRequest(method, c.GetAdminBaseURL(resource), body)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Content-Type", "application/json")
+	res, err := c.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer res.Body.Close()
+
+	if res.StatusCode > 299 {
+		bodyBytes, _ := io.ReadAll(res.Body)
+		return nil, fmt.Errorf("invalid response: %s - %s", res.Status, string(bodyBytes))
 	}
 
 	data, err := io.ReadAll(res.Body)
@@ -82,7 +116,7 @@ func (c *Client) Do(req *http.Request) (*http.Response, error) {
 
 // GetAdminBaseURL return admin API base URL
 func (c *Client) GetAdminBaseURL(resource string) string {
-	path := fmt.Sprintf("/admin/realms/%s/%s", c.Realm, resource)
+	path := fmt.Sprintf("/admin/realms/%s/%s", c.Realm, strings.TrimPrefix(resource, "/"))
 	return c.Authority + path
 }
 
