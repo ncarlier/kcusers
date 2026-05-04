@@ -30,9 +30,12 @@ client_id = "${KCUSERS_CLIENT_ID}"
 # Client secret
 # Default: ""
 client_secret = "${KCUSERS_CLIENT_SECRET}"
+# Token cache file
+# Default: ".kcusers-token.json"
+cache = "${KCUSERS_CACHE}"
 # Insecure TLS configuration
 # Default: false
-tls_insecure = ${KCUSERS_TLS_INSECURE}
+tls_insecure = false
 # HTTP timeout
 # Default: "5s"
 timeout = "${KCUSERS_TIMEOUT}"

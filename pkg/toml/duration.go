@@ -16,6 +16,10 @@ func (d *Duration) UnmarshalTOML(data []byte) (err error) {
 	if s != "" && s[len(s)-1] == '"' {
 		s = s[:len(s)-1]
 	}
+	if s == "" {
+		d.Duration = 0
+		return nil
+	}
 	d.Duration, err = time.ParseDuration(s)
 	return
 }

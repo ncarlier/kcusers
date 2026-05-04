@@ -42,6 +42,7 @@ authority = "http://loclahost:8080"
 realm = "test"
 client_id = "xxx"
 client_secret = "yyy"
+cache = ".kcusers-token.json"
 timeout = "5s"
 ```
 

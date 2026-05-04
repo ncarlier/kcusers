@@ -9,6 +9,11 @@ import (
 	"github.com/ncarlier/kcusers/pkg/keycloak"
 )
 
+const (
+	defaultLevel  = "info"
+	defaultFormat = "text"
+)
+
 // Config is the root of the configuration
 type Config struct {
 	Log      LogConfig
@@ -21,12 +26,28 @@ type LogConfig struct {
 	Format string
 }
 
+// ApplyDefaults applies default values to empty fields
+func (c *LogConfig) ApplyDefaults() {
+	if c.Level == "" {
+		c.Level = defaultLevel
+	}
+	if c.Format == "" {
+		c.Format = defaultFormat
+	}
+}
+
+// ApplyDefaults applies default values to empty fields
+func (c *Config) ApplyDefaults() {
+	c.Log.ApplyDefaults()
+	c.Keycloak.ApplyDefaults()
+}
+
 // NewConfig create new configuration
 func NewConfig() *Config {
 	c := &Config{
 		Log: LogConfig{
-			Level:  "info",
-			Format: "text",
+			Level:  defaultLevel,
+			Format: defaultFormat,
 		},
 		Keycloak: keycloak.NewDefaultConfig(),
 	}
@@ -53,6 +74,8 @@ func (c *Config) LoadConfig(path string) error {
 	if err = toml.UnmarshalTable(tbl, &c); err != nil {
 		return fmt.Errorf("error parsing configuration: %w", err)
 	}
+
+	c.ApplyDefaults()
 
 	return nil
 }
