@@ -22,10 +22,10 @@ format = "${KCUSERS_LOG_FORMAT}"
 # Default: "http://localhost:8080"
 authority = "${KCUSERS_AUTHORITY}"
 # Keycloak realm
-# Default: "test"
+# Default: "master"
 realm = "${KCUSERS_REALM}"
 # Client ID
-# Default: "test"
+# Default: "test-client"
 client_id = "${KCUSERS_CLIENT_ID}"
 # Client secret
 # Default: ""

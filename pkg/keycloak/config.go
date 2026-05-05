@@ -9,7 +9,7 @@ import (
 const (
 	defaultAuthority = "http://localhost:8080"
 	defaultRealm     = "master"
-	defaultClientID  = "test"
+	defaultClientID  = "test-client"
 	defaultTimeout   = 5 * time.Second
 	defaultCache     = ".kcusers-token.json"
 )
