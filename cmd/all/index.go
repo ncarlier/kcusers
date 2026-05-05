@@ -11,6 +11,8 @@ import (
 	_ "github.com/ncarlier/kcusers/cmd/users/delete"
 	// activate create-user command
 	_ "github.com/ncarlier/kcusers/cmd/users/create"
+	// activate reset-password command
+	_ "github.com/ncarlier/kcusers/cmd/users/reset-password"
 	// activate count-sessions command
 	_ "github.com/ncarlier/kcusers/cmd/sessions/count"
 	// activate version command
