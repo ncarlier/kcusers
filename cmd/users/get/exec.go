@@ -9,10 +9,20 @@ import (
 
 const unableToGetUser = "unable to get user"
 
-func exec(client *keycloak.Client, uid string) error {
-	slog.Debug("getting user...", "uid", uid)
-	if err := getUser(client, uid); err != nil {
-		slog.Error(unableToGetUser, "uid", uid, "error", err)
+func exec(client *keycloak.Client, uid, username string) error {
+	resolvedUID := uid
+	if resolvedUID == "" {
+		slog.Debug("looking up user by username...", "username", username)
+		foundUID, err := client.LookupUIDByUsername(username)
+		if err != nil {
+			return fmt.Errorf("%s: %w", unableToGetUser, err)
+		}
+		resolvedUID = foundUID
+	}
+
+	slog.Debug("getting user...", "uid", resolvedUID)
+	if err := getUser(client, resolvedUID); err != nil {
+		slog.Error(unableToGetUser, "uid", resolvedUID, "error", err)
 		return fmt.Errorf("%s: %w", unableToGetUser, err)
 	}
 	return nil
