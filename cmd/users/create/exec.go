@@ -30,21 +30,10 @@ func exec(client *keycloak.Client, username, uid string) error {
 	return nil
 }
 
-type UserRepresentation struct {
-	ID       string `json:"id,omitempty"`
-	Username string `json:"username"`
-	Enabled  bool   `json:"enabled"`
-}
-
-type PartialImportRepresentation struct {
-	IfResourceExists string               `json:"ifResourceExists"`
-	Users            []UserRepresentation `json:"users"`
-}
-
 func createUser(client *keycloak.Client, username string) error {
 	resource := "/users"
 
-	user := UserRepresentation{
+	user := keycloak.UserRepresentation{
 		Username: username,
 		Enabled:  true,
 	}
@@ -69,9 +58,9 @@ func createUser(client *keycloak.Client, username string) error {
 func createUserWithUUID(client *keycloak.Client, username, uid string) error {
 	resource := "/partialImport"
 
-	importPayload := PartialImportRepresentation{
+	importPayload := keycloak.PartialImportRepresentation{
 		IfResourceExists: "FAIL",
-		Users: []UserRepresentation{
+		Users: []keycloak.UserRepresentation{
 			{
 				ID:       uid,
 				Username: username,

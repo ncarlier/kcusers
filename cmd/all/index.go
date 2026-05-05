@@ -13,6 +13,8 @@ import (
 	_ "github.com/ncarlier/kcusers/cmd/users/create"
 	// activate reset-password command
 	_ "github.com/ncarlier/kcusers/cmd/users/reset-password"
+	// activate add-to-group command
+	_ "github.com/ncarlier/kcusers/cmd/users/add-to-group"
 	// activate count-sessions command
 	_ "github.com/ncarlier/kcusers/cmd/sessions/count"
 	// activate version command
