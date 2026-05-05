@@ -9,6 +9,8 @@ import (
 	_ "github.com/ncarlier/kcusers/cmd/users/count"
 	// activate delete-users command
 	_ "github.com/ncarlier/kcusers/cmd/users/delete"
+	// activate create-user command
+	_ "github.com/ncarlier/kcusers/cmd/users/create"
 	// activate count-sessions command
 	_ "github.com/ncarlier/kcusers/cmd/sessions/count"
 	// activate version command
