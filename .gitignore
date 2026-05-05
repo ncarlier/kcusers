@@ -1,3 +1,7 @@
 release/
 .vscode/
 CHANGELOG.md
+AGENTS.md
+.kcusers-token.json
+kcusers.toml
+kcusers

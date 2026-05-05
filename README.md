@@ -1,70 +1,71 @@
-# Simple Keycloak user management CLI
+# kcusers (Keycloak User Management CLI)
 
-Simple CLI used to do some user management tasks on a Keycloak instance.
+A simple and fast CLI to perform user management tasks on a Keycloak instance.
 
 ## Installation
 
-Run the following command:
+Install using Go:
 
 ```bash
-$ go install github.com/ncarlier/kcusers@latest
+go install github.com/ncarlier/kcusers@latest
 ```
 
-**Or** download the binary regarding your architecture:
+Or install the binary directly (Linux/macOS):
 
 ```bash
-$ curl -sf https://gobinaries.com/ncarlier/kcusers | sh
+curl -sf https://gobinaries.com/ncarlier/kcusers | sh
 ```
 
-## Build
+## Getting Started
+
+1. **Initialize Configuration:**
+   Generate a default configuration file:
+   ```bash
+   kcusers init-config -f kcusers.toml
+   ```
+
+2. **Configure:**
+   Update `kcusers.toml` with your Keycloak credentials:
+   ```toml
+   [log]
+   level = "info"
+   format = "text"
+
+   [keycloak]
+   authority = "http://localhost:8080"
+   realm = "test"
+   client_id = "xxx"
+   client_secret = "yyy"
+   cache = ".kcusers-token.json"
+   timeout = "5s"
+   ```
+
+3. **Usage Examples:**
+   ```bash
+   # Display help and available commands
+   kcusers -h
+
+   # Count total users
+   kcusers count-users
+
+   # Get a specific user by ID
+   kcusers get-user -uid ffcc46cc-f66d-4df8-a623-a6d54ff242df
+
+   # Delete multiple users (with dry-run and concurrency)
+   kcusers delete-users -f users_to_delete.txt --dry-run --concurrent 5
+
+   # Count active sessions for a client
+   kcusers count-sessions -cid 2ca2c534-59e9-4039-94fb-562072cd1c11
+   ```
+
+## Development
+
+Build the project using Make:
 
 ```bash
-make
-```
-
-## Geting started
-
-Create the configuration file:
-
-```bash
-./kcusers init-config -f kcusers.toml
-```
-
-Customize the configuration file:
-
-```toml
-[log]
-level = "info"
-format = "text"
-
-[keycloak]
-authority = "http://loclahost:8080"
-realm = "test"
-client_id = "xxx"
-client_secret = "yyy"
-cache = ".kcusers-token.json"
-timeout = "5s"
-```
-
-Play with the CLI
-
-```bash
-# Get CLI usage
-./kcusers -h
-# Count users
-./kcusers count-users
-# Get user
-./kcusers get-user -uid ffcc46cc-f66d-4df8-a623-a6d54ff242df
-# Delete users
-./kcusers delete-users -f users_to_delete.txt --dry-run --concurent 5
-# Count client's sessions
-./kcusers count-sessions -cid 2ca2c534-59e9-4039-94fb-562072cd1c11
+make build
 ```
 
 ## License
 
-The MIT License (MIT)
-
-See [LICENSE](./LICENSE) to see the full text.
-
----
+MIT License. See [LICENSE](./LICENSE) for details.
